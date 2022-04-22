@@ -1,0 +1,33 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<a type="button" class="btn btn-primary btn-block" asp-page="/Items/Cards/AllItems">All Items</a>
+
+@foreach (var category in @Model.Categories)
+{
+<div style="white-space: nowrap; margin-top: 8px;">
+    <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Items/Cards/AllItems" asp-page-handler="FilterByCategory" asp-route-category="@category.CategoryId">@category.CategoryName</a>
+
+    @if (HttpContext.User.Identity.Name != null)
+    {
+        if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+        {
+            <a class="btn btn-warning btn-sm" style="display: inline-block;" type="button" data-toggle="tooltip" data-placement="top" title="Edit" asp-page="/Categories/EditCategory" asp-route-id="@category.CategoryId"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-danger btn-sm" style="display: inline-block;" type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="/Categories/DeleteCategory" asp-route-id="@category.CategoryId"><i class="fa fa-trash"></i></a>
+        }
+    }
+</div>
+}
+
+@if (HttpContext.User.Identity.Name != null)
+{
+    if (HttpContext.User.IsInRole("admin"))
+    {
+        <div class="container-fluid" style="margin-top: 8px;">
+            <a type="button" class="btn btn-primary" asp-page="/Categories/CreateCategory">Create Category</a>
+        </div>
+    }
+}

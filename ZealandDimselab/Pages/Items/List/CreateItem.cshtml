@@ -1,0 +1,208 @@
+﻿@page
+@model ZealandDimselab.Pages.Items.CreateItemModel
+@{
+}
+
+
+<!-- COPY FROM UNDER THIS LINE -->
+<table class="table table-bordered table-hover table-striped" width="70%">
+    @if (HttpContext.User.Identity.Name != null)
+    {
+        if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+        {
+            <p>
+                <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
+            </p>
+            <col style="width: 8%">
+            <col style="width: 15%">
+            <col style="width: 45%">
+            <col style="width: 14%">
+            <col style="width: 18%">
+        }
+        else
+        {
+            <col style="width: 30%">
+            <col style="width: 60%">
+            <col style="width: 10%">
+            <col style="width: 18%">
+        }
+    }
+    else
+    {
+        <col style="width: 30%">
+        <col style="width: 60%">
+        <col style="width: 10%">
+        <col style="width: 18%">
+    }
+
+    <thead>
+        <tr class="btn-secondary active">
+            @if (HttpContext.User.Identity.Name != null) // Only shows ID column if logged in as admin
+            {
+                if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                {
+                    <th>
+                        <div class="d-flex justify-content-between p-0">
+                            <div><h5>Id</h5></div>
+                        </div>
+                    </th>
+                }
+            }
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Name</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5 style="padding-bottom: 0">In Stock/ </h5>
+                        <h5>Total Quantity</h5>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr class="btn-secondary">
+                @if (HttpContext.User.Identity.Name != null)
+                {
+                    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                    {
+                        <td>
+                            @item.Id
+                        </td>
+                    }
+                }
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Description
+                    @if (item.Category != null)
+                    {
+                        <p>Category:  @item.Category.CategoryName</p>
+                    }
+                </td>
+                <td>
+                    <p>@item.Stock/@item.Quantity</p>
+                </td>
+                <td>
+                    <ol class="p-0">
+                        <li class="list-inline-item">
+                            <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-search-plus"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Add To Cart" asp-page="/BookingPages/BookingCart" asp-route-id="@item.Id" asp-page-handler="AddToCart"><i class="fa fa-cart-plus"></i></a>
+                        </li>
+                        @if (HttpContext.User.Identity.Name != null) // Only shows edit/delete if logged in as admin
+                        {
+                            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+                            {
+                                <li class="list-inline-item">
+                                    <a class="btn btn-warning btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Edit" asp-page="EditItem" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-edit"></i></a>
+                                </li>
+                                <li class="list-inline-item">
+                                    <a class="btn btn-danger btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-trash"></i></a>
+                                </li>
+                            }
+                        }
+                    </ol>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<!-- COPY FROM ABOVE THIS LINE -->
+
+<!-- MODAL START-->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Creating new item</h5>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input asp-for="@Model.CategoryId" type="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Name" class="control-label"></label>
+                        <input asp-for="@Model.Item.Name" class="form-control" />
+                        <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
+                    </div>
+
+                    <label>Image</label>
+                    <input id="File1" type="file" asp-for="FileUpload" class="file" style="visibility: hidden; position: absolute;" accept="image/*" />
+                    <div class="input-group my-3">
+                        <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
+                        <div class="input-group-append">
+                            <button type="button" class="browse btn btn-primary">Browse...</button>
+                        </div>
+                    </div>
+                    <div class="w-100">
+                        <img src="https://placehold.it/80x80" id="preview" class="img-thumbnail">
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Description" class="control-label"></label>
+                        <textarea asp-for="@Model.Item.Description" class="form-control" rows="8" id="textarea"></textarea>
+                        <span asp-validation-for="@Model.Item.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Quantity" class="control-label"></label>
+                        <input asp-for="@Model.Item.Quantity" class="form-control" />
+                        <span asp-validation-for="@Model.Item.Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.CategoryId" class="control-label"></label>
+                        <select class="form-control" asp-for="@Model.Item.CategoryId">
+                            @foreach (var category in @Model.Categories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <div class="col-2">
+                        <a type="button" class="btn btn-danger" asp-page="AllItems" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId">Cancel</a>
+                    </div>
+                    <div class="col-2">
+                        <form method="post">
+                            <input type="submit" value="Create" class="btn btn-success" />
+                        </form>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- MODAL END -->
+
+
+@section Scripts
+{
+    <script src="~/js/browse.js"></script>
+    <script src="~/js/showTooltips.js"></script>
+    <script src="~/js/showModal.js"></script>
+}

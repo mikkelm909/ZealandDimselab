@@ -1,0 +1,46 @@
+﻿@*<form method="post">
+    <div class="form-group">
+        <label  class="col-form-label "></label>
+        <div>
+            <input  />
+        </div>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-outline-light">Log in</button>
+    </div>
+</form>*@
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="details-modal" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Hold!</h5>
+            </div>
+            <div class="modal-body">
+                    <p>In order to continue with your order, please enter a valid Zealand Email.</p>
+                    <form method="post">
+                        <div class="form-group">
+                            <label class="col-form-label ">Zealand Email</label>
+                            <div>
+                                <input name="email" type="email" pattern=".+@@edu.easj.dk" required/>
+                                <input type="hidden" name="url" value="@Url.Action()">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button class="btn btn-outline-light" asp-page="BookingCart" asp-page-handler="EmailSubmitted">Submit</button>
+                            <a class="btn btn-danger" type="submit" asp-page="..\Items\Cards\AllItems">Return</a>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    $(window).on('load', function() {
+        $('#details-modal').modal('show');
+    });
+</script>

@@ -1,0 +1,147 @@
+﻿@page
+@model ZealandDimselab.Pages.Items.EditItemModel
+@{
+}
+
+
+<!-- COPY FROM UNDER THIS LINE -->
+@if (HttpContext.User.Identity.Name != null)
+{
+    if (HttpContext.User.IsInRole("admin"))
+    {
+        <p>
+            <a class="btn btn-primary" data-toggle="tooltip" title="Add Item" asp-page="CreateItem" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-plus-square mr-1"></i> Create a new Item </a>
+        </p>
+    }
+}
+
+<div class="card-group">
+    
+    @foreach (var item in @Model.Items)
+    {
+        <div class="card bg-primary" style="min-width: 25%; max-width: 50%">
+            <div class="card-header text-center">
+                <p class="card-text text-truncate text-white">@item.Name</p>
+                
+            </div>
+            <div class="card-header text-center d-inline-flex">
+                <p class="card-text text-truncate text-white w-50" style="margin-bottom: 0; font-size: 75%">Stock: @item.Stock/@item.Quantity</p>
+
+                <p class="card-text text-truncate text-white w-50" style="margin-bottom: 0; font-size: 75%">@item.Category.CategoryName</p>
+            </div>
+                <div class="card-body text-center p-2">
+                    @if (String.IsNullOrEmpty(item.ImageName))
+                    {
+                        <img src="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" style="" />
+                    }
+                    else
+                    {
+                        <img src="~/images/ItemImages/@item.ImageName" alt="Image not found" class="img-fluid w-100" style="" />
+                    }
+                    <p class="card-text p-0 text-white" style="font-size: 75%">@item.Description</p>
+                </div>
+                <div class="card-footer p-2">
+                    <ol class="p-0 text-center" style="margin-bottom: 0">
+                        <li class="list-inline-item p-0" style="margin-right: 0">
+                            <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Details" asp-page="ItemDetails" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId" asp-route-returnUrl="Items/Cards/AllItems"><i class="fa fa-search-plus fa-fw"></i></a>
+                        </li>
+                        <li class="list-inline-item p-0" style="margin-right: 0">
+                            <a class="btn btn-info btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Add To Cart" asp-page="/BookingPages/BookingCart" asp-route-id="@item.Id" asp-page-handler="AddToCart"><i class="fa fa-cart-plus fa-fw"></i></a>
+                        </li>
+                        @if (HttpContext.User.Identity.Name != null) // Only shows edit/delete if logged in as admin
+                        {
+                            if (HttpContext.User.IsInRole("admin"))
+                            {
+                                <li class="list-inline-item p-0" style="margin-right: 0">
+                                    <a class="btn btn-warning btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Edit" asp-page="EditItem" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-edit fa-fw"></i></a>
+                                </li>
+                                <li class="list-inline-item p-0" style="margin-right: 0">
+                                    <a class="btn btn-danger btn-sm" type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="DeleteItem" asp-route-id="@item.Id" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId"><i class="fa fa-trash fa-fw"></i></a>
+                                </li>
+                            }
+                        }
+                    </ol>
+                </div>
+            </div>
+    }
+
+</div>
+<!-- COPY FROM ABOVE THIS LINE -->
+<!-- MODAL START-->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Editing item "@Model.Item.Name"</h5>
+            </div>
+
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input asp-for="@Model.CategoryId" type="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <input asp-for="@Model.Item.Id" type="hidden" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Name" class="control-label"></label>
+                        <input asp-for="@Model.Item.Name" class="form-control" />
+                        <span asp-validation-for="@Model.Item.Name" class="text-danger"></span>
+                    </div>
+                    <label>Image</label>
+                    <input id="File1" type="file" asp-for="FileUpload" class="file" style="visibility: hidden; position: absolute;" accept="image/*" />
+                    <div class="input-group my-3">
+                        <input type="text" class="form-control" disabled placeholder="Upload File" id="file">
+                        <div class="input-group-append">
+                            <button type="button" class="browse btn btn-primary">Browse...</button>
+                        </div>
+                    </div>
+                    <div class="w-100">
+                        <img src="https://placehold.it/80x80" id="preview" class="img-thumbnail">
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Description" class="control-label"></label>
+                        <textarea asp-for="@Model.Item.Description" class="form-control" rows="8" id="textarea"></textarea>
+                        <span asp-validation-for="@Model.Item.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.Quantity" class="control-label"></label>
+                        <input asp-for="@Model.Item.Quantity" class="form-control" />
+                        <span asp-validation-for="@Model.Item.Quantity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Item.CategoryId" class="control-label"></label>
+                        <select class="form-control" asp-for="@Model.Item.CategoryId">
+                            @foreach (var category in @Model.Categories)
+                            {
+                                <option value="@category.CategoryId">@category.CategoryName</option>
+                            }
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <div class="col-2">
+                        <a type="button" class="btn btn-danger" asp-page="AllItems" asp-page-handler="FilterByCategory" asp-route-category="@Model.CategoryId">Cancel</a>
+                    </div>
+                    <div class="col-2">
+                            <input type="submit" value="Edit" class="btn btn-success" />
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- MODAL END -->
+
+
+@section Scripts
+{
+    <script src="~/js/browse.js"></script>
+    <script src="~/js/showTooltips.js"></script>
+    <script src="~/js/showModal.js"></script>
+}

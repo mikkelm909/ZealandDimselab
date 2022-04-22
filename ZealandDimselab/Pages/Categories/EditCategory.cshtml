@@ -1,0 +1,76 @@
+﻿@page
+@model ZealandDimselab.Pages.Categories.EditCategoryModel
+@{
+}
+
+<a type="button" class="btn btn-primary btn-block" asp-page="/Items/AllItems">All Items</a>
+
+@foreach (var category in @Model.Categories)
+{
+    <div style="white-space: nowrap; margin-top: 8px;">
+        <a type="button" class="btn btn-primary btn-block" style="display: inline-block;" asp-page="/Items/AllItems" asp-page-handler="FilterByCategory" asp-route-category="@category.CategoryId">@category.CategoryName</a>
+
+        @if (HttpContext.User.Identity.Name != null)
+        {
+            if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+            {
+                <a class="btn btn-warning btn-sm" style="display: inline-block;" type="button" data-toggle="tooltip" data-placement="top" title="Edit" asp-page="/Categories/EditCategory" asp-route-id="@category.CategoryId"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger btn-sm" style="display: inline-block;" type="button" data-toggle="tooltip" data-placement="top" title="Delete" asp-page="/Categories/DeleteCategory" asp-route-id="@category.CategoryId"><i class="fa fa-trash"></i></a>
+            }
+        }
+    </div>
+}
+
+@if (HttpContext.User.Identity.Name != null)
+{
+    if (HttpContext.User.Identity.Name.Equals("Admin@Dimselab.dk"))
+    {
+        <div class="container-fluid" style="margin-top: 8px;">
+            <a type="button" class="btn btn-primary" asp-page="/Categories/CreateCategory">Create Category</a>
+        </div>
+    }
+}
+
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Editing item "@Model.Category.CategoryName"</h5>
+            </div>
+
+            <form method="post">
+                <div class="modal-body">
+                    <input asp-for="@Model.Category.CategoryId" type="hidden" />
+
+                    <div class="form-group">
+                        <label asp-for="@Model.Category.CategoryName" class="control-label">Category Name:</label>
+                        <input asp-for="@Model.Category.CategoryName" class="form-control" />
+                        <span asp-validation-for="@Model.Category.CategoryName" class="text-danger"></span>
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer justify-content-center">
+                    <div class="col-2">
+                        <a type="button" class="btn btn-danger" asp-page="/Index">Cancel</a>
+                    </div>
+                    <div class="col-2">
+                        <form method="post">
+                            <input type="submit" value="Edit" class="btn btn-success" />
+                        </form>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/showTooltips.js"></script>
+    <script src="~/js/showModal.js"></script>
+}

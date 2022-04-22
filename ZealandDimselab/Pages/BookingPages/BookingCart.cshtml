@@ -1,0 +1,94 @@
+﻿@page
+@model ZealandDimselab.Pages.BookingPages.BookingCartModel
+@{
+}
+
+@if (!HttpContext.User.Identity.IsAuthenticated)
+{
+
+    @await Component.InvokeAsync("Modal");
+}
+
+<h1>
+    Cart
+</h1>
+
+@*Error message if trying to book more than stock*@
+@if (ViewData["error"] != null)
+{
+    <h5 class="text-danger">@ViewData["error"].ToString()</h5>
+}
+
+<form method="post">
+    <table class="table table-bordered table-hover table-striped" width="70%">
+        <tr class="btn-secondary active">
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Image</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Product</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Description</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Quantity</h5></div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div><h5>Actions</h5></div>
+                </div>
+            </th>
+        </tr>
+        <tbody>
+            @foreach (var item in @Model.Cart)
+            {
+                <tr class="btn-secondary">
+                    @*<td>@item.Id</td>*@
+                    <td>
+                        @if (String.IsNullOrEmpty(item.ImageName))
+                        {
+                            <img src="~/images/ItemImages/Placeholder.jpg" class="img-fluid w-100" style="" />
+                        }
+                        else
+                        {
+                            <img src="~/images/ItemImages/@item.ImageName" alt="Image not found" class="img-fluid w-100" style="" />
+                        }
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <input type="number" name="quantities" value="@item.BookingQuantity" min="1" style="width: 50px;" />
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-primary btn-lg" asp-page-handler="Delete" asp-route-id="@item.Id"><i class="fa fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+            @*<tr>
+                    <td colspan="6" align="right">Total</td>
+                    <td align="center">$@Model.Total</td>
+                </tr>*@
+        </tbody>
+    </table>
+    <div class="form-group">
+        <label class="control-label">Additional comments.</label>
+        <textarea rows="3" asp-for="Booking.Details" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label class="control-label">Return date</label>
+        <input asp-for="Booking.ReturnDate" class="form-control" />
+        <span asp-validation-for="Booking.ReturnDate" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg" asp-page="BookingCart" asp-page-handler="Create">Confirm</button>
+    <button type="submit" class="btn btn-danger btn-lg" asp-page="BookingCart" asp-page-handler="ClearCart">Clear Cart</button>
+</form>
+<a asp-page="/index">Continue Shopping</a>

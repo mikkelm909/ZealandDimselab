@@ -1,0 +1,192 @@
+﻿@page
+@model ZealandDimselab.Pages.BookingPages.LoanedItemsModel
+@{ }
+
+<table class="table table-bordered table-hover table-striped" width="100%">
+    <col style="width: 6%">
+    <col style="width: 39%">
+    <col style="width: 10%">
+    <col style="width: 15%">
+    <col style="width: 10%">
+    <col style="width: 10%">
+    <col style="width: 20%">
+
+
+
+    <thead>
+        <tr>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Id
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByIdAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by ID Descending" asp-page="LoanedItems" asp-page-handler="SortByIdDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Item Name
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Item Name Ascending" asp-page="LoanedItems" asp-page-handler="SortByItemNameAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Item Name Descending" asp-page="LoanedItems" asp-page-handler="SortByItemNameDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Quantity
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Quantity Ascending" asp-page="LoanedItems" asp-page-handler="SortByQuantityAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Quantity Descending" asp-page="LoanedItems" asp-page-handler="SortByQuantityDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            BookingId
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Booking ID Ascending" asp-page="LoanedItems" asp-page-handler="SortByBookingIdAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Booking ID Descending" asp-page="LoanedItems" asp-page-handler="SortByBookingIdDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Booked By
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by User Ascending" asp-page="LoanedItems" asp-page-handler="SortByUserNameAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by User Descending" asp-page="LoanedItems" asp-page-handler="SortByUserNameDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Booking Date
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Booking Date Ascending" asp-page="LoanedItems" asp-page-handler="SortByBookingDateAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Booking Date Descending" asp-page="LoanedItems" asp-page-handler="SortByBookingDateDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Return Date
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Return Date Ascending" asp-page="LoanedItems" asp-page-handler="SortByReturnDateAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Return Date Descending" asp-page="LoanedItems" asp-page-handler="SortByReturnDateDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <div class="d-flex justify-content-between p-0">
+                    <div>
+                        <h5>
+                            Status
+                        </h5>
+                    </div>
+                    <div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Status Ascending" asp-page="LoanedItems" asp-page-handler="SortByStatusAscending"><i class="fa fa-angle-up"></i></a>
+                        </div>
+                        <div>
+                            <a data-toggle="tooltip" data-placement="top" title="Sort by Status Descending" asp-page="LoanedItems" asp-page-handler="SortByStatusDescending"><i class="fa fa-angle-down"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.BookedItems)
+        {
+<tr class="btn-secondary">
+    <td>
+        @item.Item.Id
+    </td>
+    <td>
+        @item.Item.Name
+    </td>
+    <td>
+        @item.Quantity
+    </td>
+    <td>
+        @item.BookingId
+    </td>
+    <td>
+        @item.User.Email
+    </td>
+    <td>
+        @item.BookingDate.Day/@item.BookingDate.Month/@item.BookingDate.Year
+    </td>
+    <td>
+        @item.ReturnDate.Day/@item.ReturnDate.Month/@item.ReturnDate.Year
+    </td>
+    <td>
+        @item.Status
+    </td>
+
+
+</tr>
+}
+
+    </tbody>
+
+</table>
